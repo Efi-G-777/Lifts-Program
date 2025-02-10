@@ -6,6 +6,10 @@ class Building:
         self.window_width = canvas.get_width()
         self.window_height = canvas.get_height()
 
+
+
+
+
     def build(self):
         for i in range(1, self.height + 1):
             canvas.blit(floor_img, (self.window_width / 2 - 90, self.window_height - (i * 75)))
