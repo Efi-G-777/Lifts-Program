@@ -22,4 +22,4 @@ def initialise_buttons(floors):
         buttons_coords.append(height + 37 - (i * 75))
     return buttons_list, buttons_coords
 
-print((initialise_buttons(num_of_floors)[1]))
+print((initialise_buttons(NUM_OF_FLOORS)[1]))

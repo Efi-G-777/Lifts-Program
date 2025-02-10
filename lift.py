@@ -4,14 +4,12 @@ class Lift:
 
     def __init__(self, lift_id):
         self.id = lift_id
-        self.window_width = canvas.get_width()
-        self.window_height = canvas.get_height()
         self.current_floor = 0
         self.call_time = 0
 
-    # def travel(self, floor):
-    #     self.__get_call_time(floor)
-    #     self.current_floor = floor
+    def draw(self, canvas, image):
+        pass
+
 
     def __str__(self):
         return f'num: {self.id}'

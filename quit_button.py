@@ -6,7 +6,7 @@ from config import *
 pygame.init()
 
 # CREATING CANVAS
-canvas = pygame.display.set_mode((window_width, window_height))
+canvas = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 # TITLE OF CANVAS
 pygame.display.set_caption("Non-Resizable Board")
