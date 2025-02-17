@@ -8,9 +8,9 @@ class Lift:
 
     def __init__(self, lift_id, canvas, callback_function, wait_time_over):
         self.id = lift_id
-        self.canvas = canvas
+        # self.canvas = canvas
         self.current_floor = 1
-        self.height = self.canvas.get_height() - (MARGIN + LIFT_SIZE[1])
+        self.height = canvas.get_height() - (MARGIN + LIFT_SIZE[1])
         self.call_time = 0
         self.upcoming = []
         self.level_when_free = 1
@@ -19,7 +19,6 @@ class Lift:
         self.dest_height = None
         self.last_update = 0
         self.waited_time = 0
-        # self.my_building = building
         self.time_when_free = 0
         self.accumulated_error = 0
         self.building_callback = callback_function
@@ -49,14 +48,13 @@ class Lift:
                 self.current_floor = None
                 current_time = pygame.time.get_ticks()
                 passed_time = current_time - self.last_update
-                accurate_dist = passed_time * PIX_PER_MILISECOND
+                accurate_dist = passed_time * PIX_PER_MILLISECOND
                 dist = round(accurate_dist)
                 self.accumulated_error += accurate_dist - dist
                 if abs(self.accumulated_error) >= 1:
                     dist += self.accumulated_error // 1
                     self.accumulated_error -= self.accumulated_error // 1
                 direction = -1 if height > dest_height else 1
-                # self.call_time -= (abs(direction) * min(dist, abs(dest_height - height))) / 160
                 dist = min(dist, abs(dest_height - self.height))
                 self.height += direction * dist
                 self.last_update = current_time

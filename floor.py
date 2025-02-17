@@ -1,5 +1,4 @@
 import pygame
-from call_button import CallButton
 from config import *
 
 def draw_spacer(canvas, top_left, color):
@@ -15,7 +14,6 @@ class Floor:
         self.button_colour = WHITE
         self.height = self.canvas.get_height() - (MARGIN + (self.level * FLOOR_HEIGHT))
         self.center = HORIZ_CENTER, self.height + FLOOR_HEIGHT // 2
-        self.button = CallButton(self.level, self.center)
         self.timer_pos = MARGIN * 2, self.height + FLOOR_HEIGHT // 2 - TIMER_HEIGHT // 2
         self.has_called = False
         self.at_floor = False
@@ -28,7 +26,13 @@ class Floor:
         canvas.blit(image, (x, y))
         draw_spacer(canvas, (x, y), spacer_colour)
         self.button_colour = GREEN if self.has_called else WHITE
-        self.button.draw_button(canvas, self.button_colour)
+        x, y = self.center
+        horiz_num_move = - 9 if self.level > 9 else - 4
+        pygame.draw.circle(canvas, self.button_colour, (x, y), BUTTON_RADIUS)
+        font = pygame.font.Font(None, 25)
+        text = font.render(f'{self.level}', True, RED)
+        canvas.blit(text, (x + horiz_num_move, y + VERT_NUM_MOVE))
+        # self.button.draw_button(canvas, self.button_colour)
         if self.time:
             self.draw_timer(canvas)
 

@@ -38,7 +38,7 @@ class Building:
         best_lift = self.lifts[0]
 
         for lift in self.lifts:
-            arrival_time = lift.time_when_free + abs(caller - lift.level_when_free) * FLOOR_HEIGHT / PIX_PER_MILISECOND
+            arrival_time = lift.time_when_free + abs(caller - lift.level_when_free) * FLOOR_HEIGHT / PIX_PER_MILLISECOND
             if arrival_time < best_arrival_time:
                 best_arrival_time = arrival_time
                 best_lift = lift
@@ -53,7 +53,7 @@ class Building:
         last_floor = level
         arrival_time = pygame.time.get_ticks()
         for floor in upcoming_list:
-            arrival_time += abs(last_floor - floor[0]) * MILISECONDS_PER_FLOOR + LIFT_STOP_TIME
+            arrival_time += abs(last_floor - floor[0]) * MILLISECONDS_PER_FLOOR + LIFT_STOP_TIME
             self.floors[floor[0] - 1].time = arrival_time
             last_floor = floor[0]
 

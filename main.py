@@ -1,13 +1,8 @@
 # from config import *
 import pygame.draw
-
-
 from building import *
 from lift import *
-from call_button import *
 
-# Initialising pygame
-# clock = pygame.time.Clock()
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load(DING_SOUND)
@@ -45,6 +40,5 @@ while run:
     building.draw(canvas)
     building.update(pos)
     window.blit(canvas, (0, -scroll_y))
-
 
     pygame.display.flip()
