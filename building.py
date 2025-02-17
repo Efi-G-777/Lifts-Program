@@ -1,11 +1,16 @@
+import pygame.time
+
 from config import *
 from lift import *
 from floor import *
+from lift import Lift
+
 
 class Building:
     def __init__(self, num_of_floors, num_of_lifts, canvas):
         self.canvas = canvas
-        self.lifts = [Lift(i, self.canvas) for i in range(1,num_of_lifts + 1)]
+        # current_time = pygame.time.get_ticks()
+        self.lifts = [Lift(i, self.canvas, self) for i in range(1,num_of_lifts + 1)]
         self.floors = [Floor(i, self.canvas) for i in range(1, num_of_floors + 1)]
 
     def draw(self, canvas):
@@ -15,7 +20,6 @@ class Building:
         self.floors[-1].draw(canvas, FLOOR_PIC, spacer_colour=WHITE)
 
         # lift_pic = pygame.transform.scale(pygame.image.load('resources/elv.png'), LIFT_SIZE)
-        # y = canvas.get_height() - MARGIN - LIFT_SIZE[1]
         for lift in self.lifts:
             lift.draw(canvas, LIFT_PIC)
 
@@ -23,37 +27,38 @@ class Building:
         if pos:
             for floor in self.floors:
                 if floor.is_calling(pos):
-                    self.allocate_lift(floor)
-                    # floor.button_colour = GREEN
-                    floor.has_called = True
+                    if not floor.has_called:
+                        if not floor.at_floor:
+                            self.allocate_lift(floor.level)
+                            floor.has_called = True
         for lift in self.lifts:
-            lift.move()
+            lift.update()
+            # if lift.current_floor:
+            #     for floor in self.floors:
+            #         if floor.level == lift.current_floor:
+            #             floor.at_floor = True
+            #         else:
+            #             floor.at_floor = False
+                    # if lift.current_floor:
+            #     self.floors[lift.current_floor - 1].at_floor = True
+            # else:
+            #     self.floors[lift.current_floor - 1].at_floor = False
 
     def allocate_lift(self, caller):
-        nearest = self.lifts[0]
-        for lift in self.lifts[1:]:
-            if lift.call_time + (abs(caller.level - lift.final) / 2) < nearest.call_time + (
-                    abs(caller.level - nearest.final) / 2):
-                nearest = lift
-        travel_time = (abs(caller.level - nearest.final) / 2) + 2
-        nearest.add_stop(caller, travel_time)
-        # nearest.upcoming.append(caller)
+        # current_time = pygame.time.get_ticks()
+        best_arrival_time = float("inf")
+        best_lift = self.lifts[0]
 
-    '''def check_button(self, canvas,  mouse, building, window):
-        if BUTTON_LEFT_EDGE <= mouse[0] <= BUTTON_RIGHT_EDGE:
-            for floor in self.floors:
-                if canvas.get_height() - floor.center - BUTTON_RADIUS <= mouse[1] <= canvas.get_height() - floor.center + BUTTON_RADIUS:
-                    # pygame.draw.circle(canvas, RED, (10, canvas.get_height() - 10), 10)
-                    self.allocate_lift(canvas, floor, building, window)
+        for lift in self.lifts:
+            arrival_time = lift.time_when_free + abs(caller - lift.level_when_free) * FLOOR_HEIGHT / PIX_PER_MILISECOND
+            if arrival_time < best_arrival_time:
+                best_arrival_time = arrival_time
+                best_lift = lift
+        best_lift.time_when_free = best_arrival_time + LIFT_STOP_TIME
+        best_lift.level_when_free = caller
+        best_lift.add_stop(caller, self.floors[caller - 1].height)
+        self.floors[caller - 1].time = best_arrival_time
 
-    def allocate_lift(self, canvas, caller, building, window):
-        nearest = self.lifts[0]
-        for lift in self.lifts[1:]:
-            if lift.call_time + (abs(caller.level - lift.final) / 2) < nearest.call_time + (abs(caller.level - nearest.final) / 2):
-                nearest = lift
-        nearest.upcoming.append(caller)
-        # nearest.travel(canvas, building, window)'''
-
-
-
-
+    def lift_arrived(self, level):
+        self.floors[level - 1].has_called = False
+        # self.floors[level - 1].at_floor = True

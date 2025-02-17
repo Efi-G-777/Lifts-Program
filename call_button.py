@@ -31,7 +31,7 @@ class CallButton:
         x, y = self.center
         HORIZ_NUM_MOVE = - 9 if self.level > 9 else - 4
         pygame.draw.circle(canvas, colour, (x, y), BUTTON_RADIUS)
-        font = pygame.font.SysFont(None, 25)
+        font = pygame.font.Font(None, 25)
         text = font.render(f'{self.level}', True, RED)
         canvas.blit(text, (x + HORIZ_NUM_MOVE, y + VERT_NUM_MOVE))
 
@@ -61,21 +61,5 @@ class CallButton:
         else:
             pygame.draw.circle(canvas, white, (self.window_width / 2, self.window_height + 37 - (self.level * 75)), 15)
         canvas.blit(self.text, (self.window_width / 2 - 4, self.window_height + 30 - (self.level * 75)))
-        # return on_button
+        # return on_button'''
 
-
-
-def initialise_buttons(floors):
-    buttons_coords = []
-    buttons_list = []
-    for i in range(1, floors + 1):
-        buttons_list.append(CallButton(i))
-        buttons_coords.append((width / 2, height + 37 - (i * 75)))
-    return buttons_list, buttons_coords
-
-# print((initialise_buttons(num_of_floors))[0])
-
-def make_buttons(floors):
-    buttons_list = initialise_buttons(floors)[0]
-    for button in buttons_list:
-        button.draw_button()'''
