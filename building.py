@@ -6,23 +6,39 @@ from lift import Lift
 
 
 class Building:
+    """
+    Represents a building with multiple floors and lifts.
+    """
     def __init__(self, num_of_floors, num_of_lifts, canvas):
+        """
+        Initializes the Building with floors and lifts.
+
+        :param num_of_floors: Number of floors in the building
+        :param num_of_lifts: Number of lifts in the building
+        :param canvas: The Pygame surface to draw on
+        """
         self.canvas = canvas
-        # current_time = pygame.time.get_ticks()
         self.lifts = [Lift(i, self.canvas, self.lift_arrived, self.wait_time_over) for i in range(1,num_of_lifts + 1)]
         self.floors = [Floor(i, self.canvas) for i in range(1, num_of_floors + 1)]
 
     def draw(self, canvas):
-        # floor_pic = pygame.transform.scale(pygame.image.load('resources/floor_pic.jpg'), (FLOOR_WIDTH, FLOOR_HEIGHT))
+        """
+        Draws floors and lifts on the canvas.
+        :param canvas: The Pygame surface to draw on
+        """
         for floor in self.floors[:-1]:
-            floor.draw(canvas, FLOOR_PIC)
-        self.floors[-1].draw(canvas, FLOOR_PIC, spacer_colour=WHITE)
-
-        # lift_pic = pygame.transform.scale(pygame.image.load('resources/elv.png'), LIFT_SIZE)
+            floor.draw(canvas, FLOOR_PIC)                           #iterates over all the floors and draws them -
+        self.floors[-1].draw(canvas, FLOOR_PIC, spacer_colour=WHITE) #except for the last one which is drawn
+                                                                    #separately with a different spacer colour
         for lift in self.lifts:
             lift.draw(canvas, LIFT_PIC)
 
     def update(self, pos):
+        """
+        Updates the state of the building, checking for floor calls and updating lifts.
+
+        :param pos: Position of mouse click for floor calls
+        """
         if pos:
             for floor in self.floors:
                 if floor.is_calling(pos):
@@ -34,6 +50,11 @@ class Building:
             lift.update()
 
     def allocate_lift(self, caller):
+        """
+        Allocates the best available lift to the calling floor.
+
+        :param caller: Floor number that requested the lift
+        """
         best_arrival_time = float("inf")
         best_lift = self.lifts[0]
 
@@ -48,6 +69,12 @@ class Building:
         self.floors[caller - 1].time = best_arrival_time
 
     def lift_arrived(self, level, upcoming_list):
+        """
+        Handles the event when a lift arrives at a floor.
+
+        :param level: The floor number where the lift arrives
+        :param upcoming_list: The list of upcoming stops for the lift
+        """
         self.floors[level - 1].has_called = False
         self.floors[level - 1].at_floor = True
         last_floor = level
@@ -58,6 +85,11 @@ class Building:
             last_floor = floor[0]
 
     def wait_time_over(self, level):
+        """
+           Handles the event when a floor's wait time is over.
+
+           :param level: The floor number whose wait time has ended
+        """
         self.floors[level - 1].at_floor = False
 
 

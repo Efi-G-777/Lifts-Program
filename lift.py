@@ -5,8 +5,19 @@ from building import *
 
 
 class Lift:
+    """
+       Represents a lift in the building that moves between floors.
+    """
 
     def __init__(self, lift_id, canvas, callback_function, wait_time_over):
+        """
+        Initializes a Lift object.
+
+        :param lift_id: Unique identifier for the lift
+        :param canvas: The Pygame surface to draw on
+        :param callback_function: Function to call when the lift arrives at a floor
+        :param wait_time_over: Function to call when the lift's waiting time is over
+        """
         self.id = lift_id
         # self.canvas = canvas
         self.current_floor = 1
@@ -25,21 +36,36 @@ class Lift:
         self.wait_time_over = wait_time_over
 
     def add_stop(self, floor, height):
+        """
+        Adds a floor to the list of upcoming stops for the lift.
+
+        :param floor: Floor number
+        :param height: Height of the floor
+        """
         self.upcoming.append((floor, height))
 
     def get_next_stop(self):
+        """
+        Retrieves the next stop from the upcoming stops list.
+        """
         if self.available and self.upcoming:
             self.dest_floor, self.dest_height = self.upcoming.pop(0)
             self.available = False
             self.last_update = pygame.time.get_ticks()
 
     def arrived(self):
+        """
+        Handles the event when the lift reaches its destination floor.
+        """
         pygame.mixer.music.play()
         self.waited_time = pygame.time.get_ticks()
         self.building_callback(self.dest_floor, self.upcoming)
 
 
     def update(self):
+        """
+        Updates the lift's position and state.
+        """
         self.time_when_free = max(pygame.time.get_ticks(), self.time_when_free)
         if not self.available:
             dest_height = self.dest_height
@@ -70,6 +96,11 @@ class Lift:
         self.get_next_stop()
 
     def draw(self, canvas, image):
+        """
+        Draws the lift at its correct position.
+        :param canvas: The Pygame surface to draw on
+        :param image: The image which gets drawn on the canvas
+        """
         x = MARGIN + FLOOR_WIDTH + MARGIN + (LIFT_SIZE[0] * (self.id - 1))
         y = self.height
         canvas.blit(image, (x, y))
