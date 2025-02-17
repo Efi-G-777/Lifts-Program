@@ -6,7 +6,7 @@ from building import *
 
 class Lift:
 
-    def __init__(self, lift_id, canvas, building):
+    def __init__(self, lift_id, canvas, callback_function, wait_time_over):
         self.id = lift_id
         self.canvas = canvas
         self.current_floor = 1
@@ -19,17 +19,17 @@ class Lift:
         self.dest_height = None
         self.last_update = 0
         self.waited_time = 0
-        self.my_building = building
+        # self.my_building = building
         self.time_when_free = 0
         self.accumulated_error = 0
-
+        self.building_callback = callback_function
+        self.wait_time_over = wait_time_over
 
     def add_stop(self, floor, height):
         self.upcoming.append((floor, height))
 
     def get_next_stop(self):
         if self.available and self.upcoming:
-            # self.current_floor = None
             self.dest_floor, self.dest_height = self.upcoming.pop(0)
             self.available = False
             self.last_update = pygame.time.get_ticks()
@@ -37,8 +37,8 @@ class Lift:
     def arrived(self):
         pygame.mixer.music.play()
         self.waited_time = pygame.time.get_ticks()
-        self.my_building.lift_arrived(self.dest_floor)
-        # self.current_floor = self.dest_floor
+        self.building_callback(self.dest_floor, self.upcoming)
+
 
     def update(self):
         self.time_when_free = max(pygame.time.get_ticks(), self.time_when_free)
@@ -66,18 +66,12 @@ class Lift:
                 current_time = pygame.time.get_ticks()
                 passed_wait_time = current_time - self.waited_time
                 if passed_wait_time >= LIFT_STOP_TIME:
+                    self.wait_time_over(self.dest_floor)
                     self.available = True
                     self.waited_time = 0
         self.get_next_stop()
-
-
-
 
     def draw(self, canvas, image):
         x = MARGIN + FLOOR_WIDTH + MARGIN + (LIFT_SIZE[0] * (self.id - 1))
         y = self.height
         canvas.blit(image, (x, y))
-
-
-
-

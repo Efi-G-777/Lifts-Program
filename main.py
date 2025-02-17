@@ -7,7 +7,7 @@ from lift import *
 from call_button import *
 
 # Initialising pygame
-clock = pygame.time.Clock()
+# clock = pygame.time.Clock()
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load(DING_SOUND)
@@ -45,8 +45,6 @@ while run:
     building.draw(canvas)
     building.update(pos)
     window.blit(canvas, (0, -scroll_y))
-    # clock.tick(FPS)
-    # clock.tick(60)
 
 
     pygame.display.flip()

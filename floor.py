@@ -16,10 +16,10 @@ class Floor:
         self.height = self.canvas.get_height() - (MARGIN + (self.level * FLOOR_HEIGHT))
         self.center = HORIZ_CENTER, self.height + FLOOR_HEIGHT // 2
         self.button = CallButton(self.level, self.center)
+        self.timer_pos = MARGIN * 2, self.height + FLOOR_HEIGHT // 2 - TIMER_HEIGHT // 2
         self.has_called = False
         self.at_floor = False
         self.time = None
-        # self.lift_state = 1
         # self.allocated_lift = None
 
     def draw(self, canvas, image, spacer_colour=BLACK):
@@ -30,46 +30,33 @@ class Floor:
         self.button_colour = GREEN if self.has_called else WHITE
         self.button.draw_button(canvas, self.button_colour)
         if self.time:
-            self.start_timer(canvas)
+            self.draw_timer(canvas)
 
     def is_calling(self, pos):
-        return self.button.pressed(pos)
-
-    def start_timer(self, canvas):
+        """
+        determines if the floor is calling a lift
+        :param pos: x, y coordinates of a mouse click
+        :return: True if and only if the click was within the bounds of the button
+        """
+        cx, cy = pos
         x, y = self.center
+        if ((cx - x) ** 2 + (cy - y) ** 2) ** 0.5 <= BUTTON_RADIUS:
+            return True
+        else:
+            return False
+
+    def draw_timer(self, canvas):
+        x, y = self.timer_pos
         time_left = (self.time - pygame.time.get_ticks()) / 1000
         if time_left >= 0:
-            # pygame.draw.circle(canvas, WHITE, (x, y), BUTTON_RADIUS)
-            pygame.draw.rect(canvas, BLACK, [x - 70, y - 15, 50, 30])
+            pygame.draw.rect(canvas, BLACK, [x, y, TIMER_WIDTH, TIMER_HEIGHT])
             font = pygame.font.Font(None, 25)
             text = font.render(str(time_left), True, WHITE)
-            canvas.blit(text, (x - 65, y - 10))
+            canvas.blit(text, (x + TEXT_MARGIN, y + TEXT_MARGIN))
         else:
             self.time = None
 
 
-    # def allocate_lift(self, canvas, building, window):
-    #     dest = canvas.get_height() - self.height
-    #     allocated = building.lifts[0]
-    #     for lift in building.lifts[1:]:
-    #         if lift.call_time + (abs(self.level - lift.final) / 2) < allocated.call_time + (abs(self.level - allocated.final) / 2):
-    #             allocated = lift
-    #     allocated.upcoming.append(self)
-    #     allocated.final = self.level
-    #     allocated.travel(canvas, building, window)
 
 
 
- # if self.allocated_lift:
-        #     if self.allocated_lift.height == self.height:
-        #         self.button_colour = GREEN
-        #     else:
-        #         self.button_colour = BLUE
-        # else:
-        #     self.button_colour = WHITE
-        # if self.lift_state == 2:
-        #     self.button_colour = GREEN
-        # elif self.lift_state == 3:
-        #     self.button_colour = BLUE
-        # else:
-        #     self.button_colour = WHITE
