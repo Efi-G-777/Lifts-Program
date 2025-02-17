@@ -4,6 +4,7 @@ from building import *
 from lift import Lift
 
 
+
 class CallButton:
     def __init__(self, floor, center):
         self.level = floor

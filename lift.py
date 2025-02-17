@@ -3,6 +3,7 @@ import pygame.mixer
 from config import *
 from building import *
 
+
 class Lift:
 
     def __init__(self, lift_id, canvas, building):

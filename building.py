@@ -1,5 +1,4 @@
 import pygame.time
-
 from config import *
 from lift import *
 from floor import *

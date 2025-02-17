@@ -1,5 +1,4 @@
 import pygame
-
 from call_button import CallButton
 from config import *
 
