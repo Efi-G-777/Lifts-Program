@@ -31,13 +31,13 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1: # mouse left
+            if event.button == MOUSE_LEFT:
                 pos = pygame.mouse.get_pos()
                 x, y = pos
                 pos = x, y + scroll_y
-            elif event.button == 4: # mouse wheel up
+            elif event.button == SCROLL_UP:
                 scroll_y -= scroll_speed
-            elif event.button == 5: # mouse wheel down
+            elif event.button == SCROLL_DOWN:
                 scroll_y += scroll_speed
             scroll_y = max(0, min(canvas_height - WINDOW_HEIGHT, scroll_y))
 

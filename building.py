@@ -41,10 +41,10 @@ class Building:
         if pos:
             for floor in self.floors:
                 if floor.is_calling(pos):
-                    if not floor.has_called:
-                        if not floor.at_floor:
-                            self.allocate_lift(floor.level)
-                            floor.has_called = True
+                    # if not floor.has_called:
+                    #     if not floor.at_floor:
+                    self.allocate_lift(floor.level)
+                    floor.has_called = True
         for lift in self.lifts:
             lift.update()
 

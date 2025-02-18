@@ -74,7 +74,7 @@ class Floor:
         cx, cy = pos
         x, y = self.center
         if ((cx - x) ** 2 + (cy - y) ** 2) ** 0.5 <= BUTTON_RADIUS: # Checks if the click was in the bounds of the button
-            return True
+            return not (self.has_called or self.at_floor)
         else:
             return False
 

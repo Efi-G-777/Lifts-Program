@@ -25,6 +25,7 @@ class Lift:
         self.available = True
         self.dest_floor = None  # The lifts current destination floor
         self.dest_height = None  # The lifts current destination y coordinate
+        self.x = MARGIN + FLOOR_WIDTH + MARGIN + (LIFT_SIZE[0] * (self.id - 1)) # The lift's x position based on it's number
         self.last_update = None  # Time of last update
         self.waited_time = 0  # Amount of time waited at floor
         self.time_when_free = 0  # Time when this lift will be available
@@ -99,6 +100,6 @@ class Lift:
         :param canvas: The Pygame surface to draw on
         :param image: The image which gets drawn on the canvas
         """
-        x = MARGIN + FLOOR_WIDTH + MARGIN + (LIFT_SIZE[0] * (self.id - 1)) # The lift's x position based on it's number
-        y = self.height # The lift's y coordinate
-        canvas.blit(image, (x, y)) # Draw the lift
+        # x = MARGIN + FLOOR_WIDTH + MARGIN + (LIFT_SIZE[0] * (self.id - 1)) # The lift's x position based on it's number
+        # y = self.height # The lift's y coordinate
+        canvas.blit(image, (self.x, self.height)) # Draw the lift
