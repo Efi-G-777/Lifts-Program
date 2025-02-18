@@ -1,5 +1,4 @@
 import pygame.time
-from config import *
 from lift import *
 from floor import *
 from lift import Lift
@@ -70,7 +69,9 @@ class Building:
 
     def lift_arrived(self, level, upcoming_list):
         """
-        Handles the event when a lift arrives at a floor.
+        Handles the event when a lift arrives at a floor,
+        and updates the arrival time of this lift to its upcoming stops
+        to compensate for run time errors
 
         :param level: The floor number where the lift arrives
         :param upcoming_list: The list of upcoming stops for the lift
